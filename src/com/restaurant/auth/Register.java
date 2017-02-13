@@ -11,31 +11,35 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.restaurant.connect.CloseCon;
+import com.restaurant.connect.Connect;
 
 @WebServlet("/register")
-public class Register extends GenericServlet{
+public class Register extends HttpServlet{
 
 	@Override
-	public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException 
+	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
 	{
 		String username=req.getParameter("user");
 		String password=req.getParameter("password");
 		System.out.println(username + " " + password);
 		
 		Connection con=null;
-		
+		PreparedStatement ps=null;
 		String qry="insert into restaurant.Users values(?,?)";
 		try
 		{
-			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Class Loaded");
-			con=DriverManager.getConnection("jdbc:mysql://localhost:3306?user=root&password=1234");
-			System.out.println("Connection Done");
-			PreparedStatement ps=con.prepareStatement(qry);
+			con=Connect.getConnect();
+			ps=con.prepareStatement(qry);
 			ps.setString(1, username);
 			ps.setString(2, password);
 			ps.executeUpdate();
 			System.out.println("User Registered");
+			res.sendRedirect("login.html");
 		}
 		catch(ClassNotFoundException e)
 		{
@@ -45,5 +49,15 @@ public class Register extends GenericServlet{
 		{
 			e.printStackTrace();
 		}
+		 finally
+		 {
+			 try {
+				CloseCon.close(con,ps);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 }
+	
 	}
 }

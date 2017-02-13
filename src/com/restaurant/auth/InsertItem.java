@@ -13,6 +13,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 
+import com.restaurant.connect.CloseCon;
+import com.restaurant.connect.Connect;
+
 @WebServlet("/insert")
 public class InsertItem extends GenericServlet
 {
@@ -27,14 +30,12 @@ public class InsertItem extends GenericServlet
 		PrintWriter pw=res.getWriter();
 		
 		String qry="Insert into restaurant.items values(?,?)";
-		
+		Connection con=null;
+		PreparedStatement ps=null;
 		try
 		{
-			Class.forName("com.mysql.jdbc.Driver");
-			System.out.println("Class Loaded");
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306?user=root&password=1234");
-			System.out.println("Connection Done");
-			PreparedStatement ps=con.prepareStatement(qry);
+			con=Connect.getConnect();
+			ps=con.prepareStatement(qry);
 			ps.setString(1, itemName);
 			ps.setString(2, itemValue);
 			ps.executeUpdate();
@@ -50,6 +51,15 @@ public class InsertItem extends GenericServlet
 		{
 			e.printStackTrace();
 		}
+		 finally
+		 {
+			 try {
+				CloseCon.close(con,ps);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 }
 		
 	}
 	

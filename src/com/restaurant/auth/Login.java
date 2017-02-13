@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.restaurant.connect.CloseCon;
+import com.restaurant.connect.Connect;
+
 @WebServlet("/login")
 public class Login extends HttpServlet
 {
@@ -26,7 +29,8 @@ public class Login extends HttpServlet
 		String password=req.getParameter("password");
 		System.out.println(username + " " + password);
 		
-		
+		Connection con=null;
+		PreparedStatement ps=null;
 		
 		PrintWriter pw=res.getWriter();
 		//validate
@@ -34,15 +38,13 @@ public class Login extends HttpServlet
 		 
 		 try
 		 {
-			 Class.forName("com.mysql.jdbc.Driver");
-			 System.out.println("Class Loaded");
-			 Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306?user=root&password=1234");
-			 System.out.println("Connection done");
-			 PreparedStatement ps=con.prepareStatement(qry);
+			con=Connect.getConnect();
+			 ps=con.prepareStatement(qry);
 			 ps.setString(1, username);
 			 ps.setString(2, password);
 			 ResultSet rs=ps.executeQuery();
 			 System.out.println("Executed");
+			 System.out.println(con);
 			 if(rs.next())
 			 {
 				 HttpSession session=req.getSession();
@@ -53,14 +55,14 @@ public class Login extends HttpServlet
 					
 				 String user=rs.getString("username");
 				 System.out.println("Welcome " + user);
-				 pw.println("<html><body><h1>Welcome "+ username +"</h1><h3>Select a task to be performed: <br> <a href='/RestaurantBilling/insertitem.html'>Insert Item</a><br><a href='/RestaurantBilling/generatebilll.html'>Generate Bill</a></h3></body></html>");
+				 res.sendRedirect("WelcomeUser.html");
 				 
 				 
 			 }
 			 else
 			 {
 				 System.out.println("Invalid User");
-				 pw.println("<html><body><h1>Invalid User</h1><br> <h3><a href='/RestaurantBilling/login.html'> Click here to try again</a></h3></body></html>");
+				res.sendRedirect("InvalidUser.html");
 			 }
 			 
 		 }
@@ -71,6 +73,15 @@ public class Login extends HttpServlet
 		 catch (SQLException e)
 		 {
 			e.printStackTrace();
+		 }
+		 finally
+		 {
+			 try {
+				CloseCon.close(con,ps);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		 }
 	
 	
