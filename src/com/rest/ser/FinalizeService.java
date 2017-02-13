@@ -1,29 +1,34 @@
-package com.restaurant.auth;
+package com.rest.ser;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.restaurant.connect.CloseCon;
 import com.restaurant.connect.Connect;
 
-@WebServlet("/finalize")
-public class Finalize extends HttpServlet
+public class FinalizeService
 {
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException 
+	public static double billamt;
+	public static void setAmt(double total)
 	{
-		String custName=req.getParameter("custName");
-		
+		billamt=total;
+	}
+	public static double getAmt()
+	{
+		return billamt;
+	}
+	
+	
+	public static void finalizeService(String custName,HttpServletRequest req, HttpServletResponse resp)
+	{
+		double total=0;
+
 		String queryGetAll="Select Rate from restaurant.items where Item=?";
 		
 		String insertCustomer="Insert into restaurant.bill values(?,?)";
@@ -31,9 +36,6 @@ public class Finalize extends HttpServlet
 		String cal="Select * from restaurant.calc";
 		
 		String clearTable="Delete from restaurant.calc";
-		
-		double total=0;
-		
 		Connection con=null;
 		PreparedStatement ps=null;
 		 try
@@ -66,15 +68,14 @@ public class Finalize extends HttpServlet
 			 ps.executeUpdate();
 			 System.out.println("Executed3");
 			 
+			 setAmt(total);
+			 
 			 
 			 ps=con.prepareStatement(clearTable);
 			 ps.executeUpdate();
 			 System.out.println("Executed4");
 			 
 			 resp.sendRedirect("TotalBill.html");
-
-			 
-		
 			 
 		 }
 		 catch(ClassNotFoundException e)
@@ -83,6 +84,9 @@ public class Finalize extends HttpServlet
 			} 
 			catch (SQLException e) 
 			{
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		 finally
@@ -94,6 +98,6 @@ public class Finalize extends HttpServlet
 				e.printStackTrace();
 			}
 		 }
-				 
+
 	}
 }

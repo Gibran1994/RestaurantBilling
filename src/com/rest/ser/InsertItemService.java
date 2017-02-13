@@ -1,37 +1,25 @@
-package com.restaurant.auth;
+package com.rest.ser;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.restaurant.connect.CloseCon;
 import com.restaurant.connect.Connect;
 
-@WebServlet("/insert")
-public class InsertItem extends HttpServlet
+public class InsertItemService 
 {
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException
+	public static void insertItemService(String itemName,String itemValue,HttpServletRequest req, HttpServletResponse res)
 	{
-		String itemName=req.getParameter("item");
-		String itemValue=req.getParameter("price");
-		System.out.println(itemName+" "+itemValue);
-		
 
-		
-		String qry="Insert into restaurant.items values(?,?)";
 		Connection con=null;
 		PreparedStatement ps=null;
+		
+		String qry="Insert into restaurant.items values(?,?)";
 		try
 		{
 			con=Connect.getConnect();
@@ -51,6 +39,9 @@ public class InsertItem extends HttpServlet
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		 finally
 		 {
@@ -61,6 +52,6 @@ public class InsertItem extends HttpServlet
 				e.printStackTrace();
 			}
 		 }
-		}
 
+	}
 }

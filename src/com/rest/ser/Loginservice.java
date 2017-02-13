@@ -1,4 +1,4 @@
-package com.restaurant.auth;
+package com.rest.ser;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -6,9 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,23 +13,16 @@ import javax.servlet.http.HttpSession;
 import com.restaurant.connect.CloseCon;
 import com.restaurant.connect.Connect;
 
-@WebServlet("/login")
-public class Login extends HttpServlet
+public class Loginservice
 {
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
+	public static void loginService(String username,String password,HttpServletRequest req, HttpServletResponse res)
 	{
-		String username=req.getParameter("user");
-		String password=req.getParameter("password");
-		System.out.println(username + " " + password);
-		
+		//validate
+		 
 		Connection con=null;
 		PreparedStatement ps=null;
+		String qry="Select username from restaurant.users where username=? and password=?";
 		
-		//validate
-		 String qry="Select username from restaurant.users where username=? and password=?";
-		 
 		 try
 		 {
 			con=Connect.getConnect();
@@ -70,7 +60,9 @@ public class Login extends HttpServlet
 		 catch (SQLException e)
 		 {
 			e.printStackTrace();
-		 }
+		 } catch (IOException e) {
+			e.printStackTrace();
+		}
 		 finally
 		 {
 			 try {
@@ -81,6 +73,6 @@ public class Login extends HttpServlet
 			}
 		 }
 	
-	
+		
 	}
 }

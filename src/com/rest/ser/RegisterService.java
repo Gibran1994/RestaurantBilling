@@ -1,32 +1,25 @@
-package com.restaurant.auth;
+package com.rest.ser;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.restaurant.connect.CloseCon;
 import com.restaurant.connect.Connect;
 
-@WebServlet("/register")
-public class Register extends HttpServlet{
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
+public class RegisterService
+{
+	public static void registerService(String username,String password,HttpServletRequest req, HttpServletResponse res)
 	{
-		String username=req.getParameter("user");
-		String password=req.getParameter("password");
-		System.out.println(username + " " + password);
-		
+
 		Connection con=null;
 		PreparedStatement ps=null;
 		String qry="insert into restaurant.Users values(?,?)";
+		
 		try
 		{
 			con=Connect.getConnect();
@@ -44,6 +37,9 @@ public class Register extends HttpServlet{
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		 finally
 		 {
@@ -54,6 +50,6 @@ public class Register extends HttpServlet{
 				e.printStackTrace();
 			}
 		 }
-	
+
 	}
 }

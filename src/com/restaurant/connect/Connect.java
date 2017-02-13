@@ -8,6 +8,8 @@ public class Connect
 {
 	public static Connection getConnect() throws SQLException, ClassNotFoundException
 	{
+		
+		
 		Connection con;
 			Class.forName("com.mysql.jdbc.Driver");
 			 System.out.println("Class Loaded");
