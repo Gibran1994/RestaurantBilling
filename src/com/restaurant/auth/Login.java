@@ -49,6 +49,7 @@ public class Login extends HttpServlet
 				 session.setAttribute("userName", username);
 				 System.out.println("session started");
 					
+				 System.out.println("This is a test for checking git");
 					
 				 String user=rs.getString("username");
 				 System.out.println("Welcome " + user);
