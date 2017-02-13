@@ -3,7 +3,6 @@ package com.restaurant.auth;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +12,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.restaurant.connect.CloseCon;
+import com.restaurant.connect.Connect;
 
 @WebServlet("/finalize")
 public class Finalize extends HttpServlet
@@ -32,14 +34,12 @@ public class Finalize extends HttpServlet
 		
 		double total=0;
 		
-		
+		Connection con=null;
+		PreparedStatement ps=null;
 		 try
 		 {
-			 Class.forName("com.mysql.jdbc.Driver");
-			 System.out.println("Class Loaded");
-			 Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306?user=root&password=1234");
-			 System.out.println("Connection done");
-			 PreparedStatement ps=con.prepareStatement(cal);
+			 con=Connect.getConnect();
+			 ps=con.prepareStatement(cal);
 			 ResultSet rs=ps.executeQuery();
 			 System.out.println("Executed1");
 			 ResultSet rs1;
@@ -71,9 +71,10 @@ public class Finalize extends HttpServlet
 			 ps.executeUpdate();
 			 System.out.println("Executed4");
 			 
-			 PrintWriter pw=resp.getWriter();
+			 resp.sendRedirect("TotalBill.html");
+
 			 
-			 pw.println("<html><body><h1> Customer Name:" + custName +"<br>Total Bill Generated:"+total+"</h1><br><a href='/RestaurantBilling/login.html'> Click here to go to login page </a></body></html>");
+		
 			 
 		 }
 		 catch(ClassNotFoundException e)
@@ -84,6 +85,15 @@ public class Finalize extends HttpServlet
 			{
 				e.printStackTrace();
 			}
+		 finally
+		 {
+			 try {
+				CloseCon.close(con,ps);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		 }
 				 
 	}
 }
