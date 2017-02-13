@@ -40,7 +40,8 @@ public class GenerateBill extends HttpServlet
 			ps.setString(2, quantity);
 			ps.executeUpdate();
 			System.out.println("Item Entry Made");
-			pw.println("<html><body><h2>"+itemName+" Entry Successful </h2> <br> <br> <a href='/RestaurantBilling/generatebilll.html'>Click here to add another item</a> <br> <a href='/RestaurantBilling/Finalize.html'>Click here to Finalize");
+			res.sendRedirect("EntrySuccess.html");
+
 			
 		}
 		catch(ClassNotFoundException e)

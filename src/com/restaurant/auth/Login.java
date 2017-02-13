@@ -1,9 +1,7 @@
 package com.restaurant.auth;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +30,6 @@ public class Login extends HttpServlet
 		Connection con=null;
 		PreparedStatement ps=null;
 		
-		PrintWriter pw=res.getWriter();
 		//validate
 		 String qry="Select username from restaurant.users where username=? and password=?";
 		 

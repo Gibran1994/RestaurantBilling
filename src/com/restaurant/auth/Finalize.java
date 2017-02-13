@@ -3,7 +3,6 @@ package com.restaurant.auth;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -72,9 +71,10 @@ public class Finalize extends HttpServlet
 			 ps.executeUpdate();
 			 System.out.println("Executed4");
 			 
-			 PrintWriter pw=resp.getWriter();
+			 resp.sendRedirect("TotalBill.html");
+
 			 
-			 pw.println("<html><body><h1> Customer Name:" + custName +"<br>Total Bill Generated:"+total+"</h1><br><a href='/RestaurantBilling/login.html'> Click here to go to login page </a></body></html>");
+		
 			 
 		 }
 		 catch(ClassNotFoundException e)
