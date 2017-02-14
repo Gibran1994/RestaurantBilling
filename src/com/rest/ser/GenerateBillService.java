@@ -1,37 +1,23 @@
-package com.restaurant.auth;
+package com.rest.ser;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.restaurant.connect.CloseCon;
 import com.restaurant.connect.Connect;
 
-@WebServlet("/bill")
-public class GenerateBill extends HttpServlet
+public class GenerateBillService 
 {
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
+	public static void generateBillService(String itemName,String quantity,HttpServletRequest req, HttpServletResponse res)
 	{
-		String itemName=req.getParameter("itemName");
-		String quantity=req.getParameter("quantity");
-		
-		System.out.println(itemName+" "+quantity);
-		
-		PrintWriter pw=res.getWriter();
-		
-		String qry="Insert into restaurant.calc values(?,?)";
 		Connection con=null;
 		PreparedStatement ps=null;
+		String qry="Insert into restaurant.calc values(?,?)";
 		try
 		{
 			con=Connect.getConnect();
@@ -51,6 +37,9 @@ public class GenerateBill extends HttpServlet
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		 finally
 		 {
@@ -61,6 +50,6 @@ public class GenerateBill extends HttpServlet
 				e.printStackTrace();
 			}
 		 }
-		
+
 	}
 }
