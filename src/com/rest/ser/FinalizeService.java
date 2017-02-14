@@ -21,6 +21,7 @@ public class FinalizeService
 	}
 	public static double getAmt()
 	{
+		System.out.println("Bill amount returned");
 		return billamt;
 	}
 	
