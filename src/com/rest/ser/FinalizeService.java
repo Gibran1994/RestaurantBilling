@@ -17,6 +17,7 @@ public class FinalizeService
 	public static double billamt;
 	public static void setAmt(double total)
 	{
+		System.out.println("Bill Amount Assigned");
 		billamt=total;
 	}
 	public static double getAmt()
