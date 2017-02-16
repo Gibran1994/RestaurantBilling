@@ -1,27 +1,40 @@
 package com.restaurant.servlets;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.net.URISyntaxException;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import com.rest.ser.RegisterService;
 
-@WebServlet("/register")
-public class RegisterServlet extends HttpServlet{
+@Path("register")
+public class RegisterServlet
+{
 
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException 
-	{
-		String username=req.getParameter("user");
-		String password=req.getParameter("password");
+		@POST
+		@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+		public static Response loginJersey(@FormParam("user") String username,@FormParam("password") String password)
+		{
 		System.out.println(username + " " + password);
 		
 		
 		
-		RegisterService.registerService(username,password,req,res);
+		RegisterService.registerService(username,password);
+		
+		try {
+			java.net.URI location;
+			location = new java.net.URI("../login.html");
+			return Response.temporaryRedirect(location).build();
+
+			} catch (URISyntaxException e) {
+			e.printStackTrace();
+			
+			}
+		return null;
 			
 	}
 }

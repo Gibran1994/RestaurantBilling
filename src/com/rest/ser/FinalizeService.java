@@ -1,13 +1,9 @@
 package com.rest.ser;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.restaurant.connect.CloseCon;
 import com.restaurant.connect.Connect;
@@ -17,7 +13,7 @@ public class FinalizeService
 	public static double billamt;
 	public static void setAmt(double total)
 	{
-		System.out.println("Bill Amount Assigned");
+		System.out.println("Bill Amount Assigned!");
 		billamt=total;
 	}
 	public static double getAmt()
@@ -27,7 +23,7 @@ public class FinalizeService
 	}
 	
 	
-	public static void finalizeService(String custName,HttpServletRequest req, HttpServletResponse resp)
+	public static void finalizeService(String custName)
 	{
 		double total=0;
 
@@ -77,7 +73,7 @@ public class FinalizeService
 			 ps.executeUpdate();
 			 System.out.println("Executed4");
 			 
-			 resp.sendRedirect("TotalBill.html");
+			// resp.sendRedirect("TotalBill.html");
 			 
 		 }
 		 catch(ClassNotFoundException e)
@@ -86,9 +82,6 @@ public class FinalizeService
 			} 
 			catch (SQLException e) 
 			{
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		 finally

@@ -1,19 +1,15 @@
 package com.rest.ser;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.restaurant.connect.CloseCon;
 import com.restaurant.connect.Connect;
 
 public class GenerateBillService 
 {
-	public static void generateBillService(String itemName,String quantity,HttpServletRequest req, HttpServletResponse res)
+	public static void generateBillService(String itemName,String quantity)
 	{
 		Connection con=null;
 		PreparedStatement ps=null;
@@ -26,7 +22,7 @@ public class GenerateBillService
 			ps.setString(2, quantity);
 			ps.executeUpdate();
 			System.out.println("Item Entry Made");
-			res.sendRedirect("EntrySuccess.html");
+			//res.sendRedirect("EntrySuccess.html");
 
 			
 		}
@@ -36,9 +32,6 @@ public class GenerateBillService
 		} 
 		catch (SQLException e) 
 		{
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		 finally
