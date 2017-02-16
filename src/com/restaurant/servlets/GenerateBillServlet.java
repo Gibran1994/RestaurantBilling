@@ -26,7 +26,7 @@ public class GenerateBillServlet
 		java.net.URI location;
 		
 		try {
-			location = new java.net.URI("../WelcomeUser.html");
+			location = new java.net.URI("../EntrySuccess.html");
 			return Response.temporaryRedirect(location).build();
 
 			} catch (URISyntaxException e) {
